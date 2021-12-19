@@ -72,6 +72,7 @@ class LEVEL_2 extends FlxState
 		if (player.alive && player.exists && tel.alive && tel.exists)
 		{
 			FlxG.switchState(new LEVEL_3());
+			FlxG.camera.fade(FlxColor.BLACK, 20, true, function() {});
 		}
 	}
 }
