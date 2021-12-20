@@ -71,9 +71,11 @@ class PlayState extends FlxState
 	{
 		if (player.alive && player.exists && tel.alive && tel.exists)
 		{
-			FlxG.switchState(new LEVEL_2());
-			FlxG.camera.fade(FlxColor.BLACK, 20, true, function() {});
-
+			FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
+			{
+				FlxG.switchState(new Stop_1());
+				tel.visible = false;
+			});
 		}
 	}
 }
