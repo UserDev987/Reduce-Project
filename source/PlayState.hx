@@ -38,7 +38,7 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		FlxG.collide(player, tel, playerTeleport);
+		FlxG.overlap(player, tel, playerTeleport);
 		FlxG.collide(player, walls);
 		FlxG.overlap(player, coins, playerTouchCoin);
 	}
