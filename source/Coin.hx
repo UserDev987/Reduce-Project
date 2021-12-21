@@ -7,6 +7,7 @@ class Coin extends FlxSprite
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
-		loadGraphic(AssetPaths.coin__png, false, 8, 8);
+		loadGraphic('assets/images/bin.png', false, 32, 32);
+		setGraphicSize(16, 16);
 	}
 }

@@ -7,6 +7,7 @@ import flixel.FlxState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tile.FlxTilemap;
+import flixel.util.FlxColor;
 
 class LEVEL_3 extends FlxState
 {
@@ -27,11 +28,12 @@ class LEVEL_3 extends FlxState
 		walls.setTileProperties(1, NONE);
 		walls.setTileProperties(2, ANY);
 		player = new Player();
-		map.loadEntities(placeEntities, "entities");
+		map.loadEntities(PlayState.placeEntities, "entities");
 		add(walls);
 
 		add(coins);
 		add(player);
+		add(PlayState.pointsT);
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		super.create();
 	}
@@ -48,27 +50,8 @@ class LEVEL_3 extends FlxState
 			return true;
 		});
 		super.update(elapsed);
+		FlxG.overlap(player, tel, PlayState.playerTeleport);
 		FlxG.collide(player, walls);
-		FlxG.overlap(player, coins, playerTouchCoin);
-	}
-
-	function placeEntities(entity:EntityData)
-	{
-		if (entity.name == "player")
-		{
-			player.setPosition(entity.x, entity.y);
-		}
-		else if (entity.name == "coin")
-		{
-			coins.add(new Coin(entity.x + 4, entity.y + 4));
-		}
-	}
-
-	function playerTouchCoin(player:Player, coin:Coin)
-	{
-		if (player.alive && player.exists && coin.alive && coin.exists)
-		{
-			coin.kill();
-		}
+		FlxG.overlap(player, coins, PlayState.playerTouchCoin);
 	}
 }

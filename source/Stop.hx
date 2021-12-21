@@ -1,34 +1,59 @@
 package;
 
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 
 class Stop extends FlxState
 {
+	var stopCamera:FlxCamera;
 	var image:FlxSprite;
-	var text:FlxText;
+	var text:String;
+	var txt:FlxText;
+	var stopNum:String;
 	var path:String;
 	var skipButton:FlxButton;
 
-	override public function new(imagePath:String, textString:String)
+	override public function new(stop:String, textString:String)
 	{
+		stopCamera = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+		stopCamera.bgColor = FlxColor.GREEN;
 		super();
 
-		path = imagePath;
+		stopNum = stop;
+		text = textString;
+
+		switch (stopNum)
+		{
+			case '1':
+				path = 'assets/images/stop img/1.png';
+			case '2':
+				path = 'assets/images/stop img/2.png';
+			case '3':
+				path = 'assets/images/stop img/3.png';
+			case '4':
+				path = 'assets/images/stop img/4.png';
+		}
 		image = new FlxSprite();
 		image.loadGraphic(path);
 		image.screenCenter();
+		image.antialiasing = false;
+		image.setGraphicSize(256);
 
 		skipButton = new FlxButton(0, 0, "SKIP", skip);
 
-		text = new FlxText(90, 400, 0, textString, 14);
-		text.alignment = CENTER;
+		txt = new FlxText(0, 310, 0, text, 10);
+		txt.screenCenter(X);
+		txt.font = 'assets/data/FONT.ttf';
+
+		txt.alignment = CENTER;
 
 		add(image);
-		add(text);
+		add(txt);
 		add(skipButton);
 	}
 

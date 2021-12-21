@@ -6,23 +6,29 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
 import flixel.tile.FlxTile;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
 
 class PlayState extends FlxState
 {
-	var player:Player;
+	static var player:Player;
+	static var tel:FlxSprite;
+	static var coins:FlxTypedGroup<Coin>;
+
 	var map:FlxOgmo3Loader;
 	var walls:FlxTilemap;
-	var tel:FlxSprite;
 	var holder:FlxSprite;
 	var canJump:Bool;
 
-	var coins:FlxTypedGroup<Coin>;
+	public static var points:Int = 0;
+	public static var pointsT:FlxText;
 
 	override public function create()
 	{
+		FlxG.cameras.bgColor = FlxColor.fromRGB(153, 80, 80, 255);
+
 		map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_001__json);
 		coins = new FlxTypedGroup<Coin>();
 		tel = new Tel(160, 272);
@@ -31,12 +37,15 @@ class PlayState extends FlxState
 		walls.setTileProperties(1, ANY);
 		walls.setTileProperties(2, ANY);
 
+		pointsT = new FlxText(0, 30, 0, Std.string(points));
+
 		player = new Player();
 		map.loadEntities(placeEntities, "entities");
 		add(walls);
 		add(tel);
 		add(coins);
 		add(player);
+		add(pointsT);
 
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		super.create();
@@ -57,9 +66,11 @@ class PlayState extends FlxState
 		FlxG.overlap(player, tel, playerTeleport);
 		FlxG.collide(player, walls);
 		FlxG.overlap(player, coins, playerTouchCoin);
+		points;
+		pointsT;
 	}
 
-	function placeEntities(entity:EntityData)
+	public static function placeEntities(entity:EntityData)
 	{
 		if (entity.name == "player")
 		{
@@ -67,7 +78,7 @@ class PlayState extends FlxState
 		}
 		else if (entity.name == "coin")
 		{
-			coins.add(new Coin(entity.x + 4, entity.y + 4));
+			coins.add(new Coin(entity.x + 4, entity.y - 8));
 		}
 		else if (entity.name == "tel")
 		{
@@ -75,21 +86,22 @@ class PlayState extends FlxState
 		}
 	}
 
-	function playerTouchCoin(player:Player, coin:Coin)
+	public static function playerTouchCoin(player:Player, coin:Coin)
 	{
 		if (player.alive && player.exists && coin.alive && coin.exists)
 		{
 			coin.kill();
+			points + 25;
 		}
 	}
 
-	function playerTeleport(player:Player, tel:Tel)
+	public static function playerTeleport(player:Player, tel:Tel)
 	{
 		if (player.alive && player.exists && tel.alive && tel.exists)
 		{
 			FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
 			{
-				FlxG.switchState(new Stop('assets/images/Caphhture.PNG', "this is a very cool image"));
+				FlxG.switchState(new Stop('1', "this is a very cool image"));
 				tel.visible = false;
 			});
 		}

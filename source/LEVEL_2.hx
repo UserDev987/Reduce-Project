@@ -28,7 +28,7 @@ class LEVEL_2 extends FlxState
 		walls.setTileProperties(1, ANY);
 		walls.setTileProperties(2, ANY);
 		player = new Player();
-		map.loadEntities(placeEntities, "entities");
+		map.loadEntities(PlayState.placeEntities, "entities");
 		add(walls);
 		add(tel);
 		add(coins);
@@ -49,44 +49,8 @@ class LEVEL_2 extends FlxState
 			return true;
 		});
 		super.update(elapsed);
-		FlxG.overlap(player, tel, playerTeleport);
+		FlxG.overlap(player, tel, PlayState.playerTeleport);
 		FlxG.collide(player, walls);
-		FlxG.overlap(player, coins, playerTouchCoin);
-	}
-
-	function placeEntities(entity:EntityData)
-	{
-		if (entity.name == "player")
-		{
-			player.setPosition(entity.x, entity.y);
-		}
-		else if (entity.name == "coin")
-		{
-			coins.add(new Coin(entity.x + 4, entity.y + 4));
-		}
-		else if (entity.name == "tel")
-		{
-			tel.setPosition(entity.x, entity.y);
-		}
-	}
-
-	function playerTouchCoin(player:Player, coin:Coin)
-	{
-		if (player.alive && player.exists && coin.alive && coin.exists)
-		{
-			coin.kill();
-		}
-	}
-
-	function playerTeleport(player:Player, tel:Tel)
-	{
-		if (player.alive && player.exists && tel.alive && tel.exists)
-		{
-			FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
-			{
-				FlxG.switchState(new Stop('assets/images/Caphhture.PNG', "this is a very cool image"));
-				tel.visible = false;
-			});
-		}
+		FlxG.overlap(player, coins, PlayState.playerTouchCoin);
 	}
 }
