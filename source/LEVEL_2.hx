@@ -19,13 +19,14 @@ class LEVEL_2 extends FlxState
 
 	override public function create()
 	{
-		// map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_002__json);
+		map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, 'assets/data/room-002.json');
 		coins = new FlxTypedGroup<Coin>();
 		tel = new Tel(448, 384);
 		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
 		walls.follow();
 		walls.setTileProperties(1, NONE);
 		walls.setTileProperties(2, ANY);
+		walls.setTileProperties(3, ANY);
 		player = new Player();
 		map.loadEntities(placeEntities, "entities");
 		add(walls);
@@ -74,7 +75,7 @@ class LEVEL_2 extends FlxState
 		{
 			FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
 			{
-				FlxG.switchState(new Stop_2());
+				FlxG.switchState(new Stop('assets/images/Caphhture.PNG', "this is a very cool image"));
 				tel.visible = false;
 			});
 		}
