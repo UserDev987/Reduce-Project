@@ -91,7 +91,7 @@ class PlayState extends FlxState
 		if (player.alive && player.exists && coin.alive && coin.exists)
 		{
 			coin.kill();
-			points + 25;
+			points = points + 25;
 		}
 	}
 
