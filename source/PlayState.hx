@@ -36,6 +36,7 @@ class PlayState extends FlxState
 		add(walls);
 		add(tel);
 		add(coins);
+		add(player);
 
 		FlxG.camera.follow(player, TOPDOWN, 1);
 		super.create();
@@ -43,7 +44,6 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float)
 	{
-		add(player);
 		walls.overlapsWithCallback(player, function(a:FlxObject, b:FlxObject)
 		{
 			var jump = FlxG.keys.anyPressed([UP, W, SPACE]);

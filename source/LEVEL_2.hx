@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
@@ -24,9 +25,8 @@ class LEVEL_2 extends FlxState
 		tel = new Tel(448, 384);
 		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
 		walls.follow();
-		walls.setTileProperties(1, NONE);
+		walls.setTileProperties(1, ANY);
 		walls.setTileProperties(2, ANY);
-		walls.setTileProperties(3, ANY);
 		player = new Player();
 		map.loadEntities(placeEntities, "entities");
 		add(walls);
@@ -39,6 +39,15 @@ class LEVEL_2 extends FlxState
 
 	override public function update(elapsed:Float)
 	{
+		walls.overlapsWithCallback(player, function(a:FlxObject, b:FlxObject)
+		{
+			var jump = FlxG.keys.anyPressed([UP, W, SPACE]);
+			if (jump)
+			{
+				player.velocity.y = -player.gravity / 1.5;
+			}
+			return true;
+		});
 		super.update(elapsed);
 		FlxG.overlap(player, tel, playerTeleport);
 		FlxG.collide(player, walls);
