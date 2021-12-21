@@ -18,7 +18,7 @@ class LEVEL_3 extends FlxState
 
 	override public function create()
 	{
-		map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_003__json);
+		// map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_003__json);
 		coins = new FlxTypedGroup<Coin>();
 
 		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
