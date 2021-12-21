@@ -7,12 +7,16 @@ import flixel.util.FlxColor;
 
 class Player extends FlxSprite
 {
-	static inline var SPEED:Float = 200;
+	static inline var SPEED:Float = 100;
+
+	public var gravity:Int = 200;
 
 	public function new(x:Float = 0, y:Float = 0)
 	{
 		super(x, y);
 		drag.x = drag.y = 1600;
+		velocity.y = 100;
+		acceleration.y = gravity;
 		setSize(8, 8);
 		offset.set(4, 4);
 		loadGraphic(AssetPaths.player__png, true, 16, 16);
@@ -23,82 +27,37 @@ class Player extends FlxSprite
 		animation.add("d", [0, 1, 0, 2], 6, false);
 	}
 
-	override function update(elapsed:Float)
+	function movement()
 	{
-		updateMovement();
-		super.update(elapsed);
-	}
-
-	function updateMovement()
-	{
-		var up:Bool = false;
-		var down:Bool = false;
-		var left:Bool = false;
-		var right:Bool = false;
-
-		up = FlxG.keys.anyPressed([UP, W]);
-		down = FlxG.keys.anyPressed([DOWN, S]);
-		left = FlxG.keys.anyPressed([LEFT, A]);
-		right = FlxG.keys.anyPressed([RIGHT, D]);
-
-		if (up && down)
-		{
-			up = down = false;
-		}
+		var right = FlxG.keys.anyPressed([RIGHT, D]);
+		var left = FlxG.keys.anyPressed([LEFT, A]);
 
 		if (right && left)
 		{
-			left = right = false;
+			right = left = false;
 		}
-		if (up || down || left || right)
+		else if (right)
 		{
-			var newAngle:Float = 0;
-
-			if (up)
-			{
-				newAngle = -90;
-				if (left)
-					newAngle -= 45;
-				else if (right)
-					newAngle += 45;
-				facing = UP;
-			}
-			else if (down)
-			{
-				newAngle = 90;
-				if (left)
-					newAngle += 45;
-				else if (right)
-					newAngle -= 45;
-				facing = DOWN;
-			}
-			else if (left)
-			{
-				newAngle = 180;
-				facing = LEFT;
-			}
-			else if (right)
-			{
-				newAngle = 0;
-				facing = RIGHT;
-			}
-
-			velocity.set(SPEED, 0);
-			velocity.rotate(FlxPoint.weak(0, 0), newAngle);
-
-			if ((velocity.x != 0 || velocity.y != 0) && touching == NONE)
-			{
-				switch (facing)
-				{
-					case LEFT, RIGHT:
-						animation.play("lr");
-					case UP:
-						animation.play("u");
-					case DOWN:
-						animation.play("d");
-					case _:
-				}
-			}
+			velocity.x = SPEED;
+			animation.play("lr");
+			flipX = true;
 		}
+		else if (left)
+		{
+			velocity.x = -SPEED;
+			animation.play("lr");
+			flipX = false;
+		}
+		else
+		{
+			this.animation.stop();
+		}
+	}
+
+	override function update(elapsed:Float)
+	{
+		movement();
+
+		super.update(elapsed);
 	}
 }

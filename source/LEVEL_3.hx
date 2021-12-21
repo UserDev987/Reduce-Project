@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
@@ -18,7 +19,7 @@ class LEVEL_3 extends FlxState
 
 	override public function create()
 	{
-		// map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_003__json);
+		map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, 'assets/data/room-003.json');
 		coins = new FlxTypedGroup<Coin>();
 
 		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
@@ -37,6 +38,15 @@ class LEVEL_3 extends FlxState
 
 	override public function update(elapsed:Float)
 	{
+		walls.overlapsWithCallback(player, function(a:FlxObject, b:FlxObject)
+		{
+			var jump = FlxG.keys.anyPressed([UP, W, SPACE]);
+			if (jump)
+			{
+				player.velocity.y = -player.gravity / 1.5;
+			}
+			return true;
+		});
 		super.update(elapsed);
 		FlxG.collide(player, walls);
 		FlxG.overlap(player, coins, playerTouchCoin);
