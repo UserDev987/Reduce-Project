@@ -37,7 +37,7 @@ class PlayState extends FlxState
 		walls.setTileProperties(1, ANY);
 		walls.setTileProperties(2, ANY);
 
-		pointsT = new FlxText(0, 30, 0, Std.string(points));
+		pointsT = new FlxText(0, 60, 0, "", 10); // TODO: points disappear whenever camera focus is lost. HUD camera maybe?
 
 		player = new Player();
 		map.loadEntities(placeEntities, "entities");
@@ -66,8 +66,7 @@ class PlayState extends FlxState
 		FlxG.overlap(player, tel, playerTeleport);
 		FlxG.collide(player, walls);
 		FlxG.overlap(player, coins, playerTouchCoin);
-		points;
-		pointsT;
+		pointsT.text = Std.string(points);
 	}
 
 	public static function placeEntities(entity:EntityData)
