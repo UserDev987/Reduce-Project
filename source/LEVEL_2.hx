@@ -6,6 +6,7 @@ import flixel.FlxState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tile.FlxTilemap;
+import flixel.util.FlxColor;
 
 class LEVEL_2 extends FlxState
 {
@@ -18,7 +19,7 @@ class LEVEL_2 extends FlxState
 
 	override public function create()
 	{
-		map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_002__json);
+		// map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_002__json);
 		coins = new FlxTypedGroup<Coin>();
 		tel = new Tel(448, 384);
 		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
@@ -38,7 +39,7 @@ class LEVEL_2 extends FlxState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		FlxG.collide(player, tel, playerTeleport);
+		FlxG.overlap(player, tel, playerTeleport);
 		FlxG.collide(player, walls);
 		FlxG.overlap(player, coins, playerTouchCoin);
 	}
@@ -71,9 +72,10 @@ class LEVEL_2 extends FlxState
 	{
 		if (player.alive && player.exists && tel.alive && tel.exists)
 		{
-			FlxG.camera.fade(FlxColor.BLACK, 1, true, function()
+			FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
 			{
-				FlxG.switchState(new LEVEL_3());
+				FlxG.switchState(new Stop_2());
+				tel.visible = false;
 			});
 		}
 	}
