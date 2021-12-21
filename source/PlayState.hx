@@ -6,6 +6,7 @@ import flixel.FlxState;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tile.FlxTilemap;
+import flixel.util.FlxColor;
 
 class PlayState extends FlxState
 {
@@ -13,6 +14,7 @@ class PlayState extends FlxState
 	var map:FlxOgmo3Loader;
 	var walls:FlxTilemap;
 	var tel:FlxSprite;
+	var holder:FlxSprite;
 
 	var coins:FlxTypedGroup<Coin>;
 
@@ -20,8 +22,8 @@ class PlayState extends FlxState
 	{
 		map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_001__json);
 		coins = new FlxTypedGroup<Coin>();
-		tel = new Tel(448, 384);
-		walls = map.loadTilemap(AssetPaths.tiles__png, "walls");
+		tel = new Tel(160, 272);
+		walls = map.loadTilemap(AssetPaths.Yes__png, "walls");
 		walls.follow();
 		walls.setTileProperties(1, NONE);
 		walls.setTileProperties(2, ANY);
