@@ -17,11 +17,20 @@ class Stop extends FlxState
 	var stopNum:String;
 	var path:String;
 	var skipButton:FlxButton;
+	var curLvl:Int;
 
-	override public function new(stop:String, textString:String)
+	override public function new(stop:String, textString:String, nowLvl:Int)
 	{
-		stopCamera = new FlxCamera(0, 0, FlxG.width, FlxG.height);
-		stopCamera.bgColor = FlxColor.GREEN;
+		curLvl = nowLvl;
+		/*
+			stopCamera = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+			stopCamera.bgColor = FlxColor.GREEN;
+			FlxG.cameras.add(stopCamera);
+		 */
+
+		// fix the camera
+
+		// this.camera = stopCamera;
 		super();
 
 		stopNum = stop;
@@ -46,9 +55,10 @@ class Stop extends FlxState
 
 		skipButton = new FlxButton(0, 0, "SKIP", skip);
 
-		txt = new FlxText(0, 310, 0, text, 10);
-		txt.screenCenter(X);
-		txt.font = 'assets/data/FONT.ttf';
+		txt = new FlxText(208, 304, 0, text, 14);
+
+		txt.antialiasing = false;
+		txt.font = 'assets/data/ComicMono.ttf';
 
 		txt.alignment = CENTER;
 
@@ -59,7 +69,17 @@ class Stop extends FlxState
 
 	function skip()
 	{
-		FlxG.switchState(new LEVEL_2());
+		switch (curLvl)
+		{
+			case 1:
+				FlxG.switchState(new LEVEL_2());
+			case 2:
+				FlxG.switchState(new LEVEL_3());
+			case 3:
+				trace("level 4 is unexistent; remaining on a black screen");
+			case _:
+				throw("invalid level");
+		}
 	}
 
 	override public function update(elapsed:Float)

@@ -13,9 +13,9 @@ import flixel.util.FlxColor;
 
 class PlayState extends FlxState
 {
-	static var player:Player;
-	static var tel:FlxSprite;
-	static var coins:FlxTypedGroup<Coin>;
+	var player:Player;
+	var tel:FlxSprite;
+	var coins:FlxTypedGroup<Coin>;
 
 	var map:FlxOgmo3Loader;
 	var walls:FlxTilemap;
@@ -32,13 +32,15 @@ class PlayState extends FlxState
 		map = new FlxOgmo3Loader(AssetPaths.HelloWorld__ogmo, AssetPaths.room_001__json);
 		coins = new FlxTypedGroup<Coin>();
 		tel = new Tel(160, 272);
+
 		walls = map.loadTilemap(AssetPaths.Yes__png, "walls");
 		walls.follow();
 		walls.setTileProperties(1, ANY);
 		walls.setTileProperties(2, ANY);
 
-		pointsT = new FlxText(0, 60, 0, "", 10); // TODO: points disappear whenever camera focus is lost. HUD camera maybe?
+		pointsT = new FlxText(0, 60, 0, "", 14); // TODO: points disappear whenever camera focus is lost. HUD camera maybe?
 
+		pointsT.font = 'assets/data/ComicMono.ttf';
 		player = new Player();
 		map.loadEntities(placeEntities, "entities");
 		add(walls);
@@ -69,7 +71,7 @@ class PlayState extends FlxState
 		pointsT.text = Std.string(points);
 	}
 
-	public static function placeEntities(entity:EntityData)
+	function placeEntities(entity:EntityData)
 	{
 		if (entity.name == "player")
 		{
@@ -85,7 +87,7 @@ class PlayState extends FlxState
 		}
 	}
 
-	public static function playerTouchCoin(player:Player, coin:Coin)
+	function playerTouchCoin(player:Player, coin:Coin)
 	{
 		if (player.alive && player.exists && coin.alive && coin.exists)
 		{
@@ -94,13 +96,13 @@ class PlayState extends FlxState
 		}
 	}
 
-	public static function playerTeleport(player:Player, tel:Tel)
+	function playerTeleport(player:Player, tel:Tel)
 	{
 		if (player.alive && player.exists && tel.alive && tel.exists)
 		{
 			FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
 			{
-				FlxG.switchState(new Stop('1', "this is a very cool image"));
+				FlxG.switchState(new Stop('1', "4 plastic bags are consumed", 1));
 				tel.visible = false;
 			});
 		}
